@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuesioner Gizi Sayuran — MAN 2 Surakarta</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hijau:     #2D6A4F;
+    --hijau-mid: #40916C;
+    --hijau-muda:#74C69D;
+    --krem:      #F8F4EE;
+    --krem-tua:  #EDE8DF;
+    --teks:      #1A1A1A;
+    --teks-sub:  #5C5C5C;
+    --putih:     #FFFFFF;
+    --merah:     #C0392B;
+    --radius:    12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--krem);
+    color: var(--teks);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--hijau);
+    padding: 28px 24px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(116,198,157,0.15);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(116,198,157,0.1);
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: var(--hijau-muda);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(18px, 4vw, 26px);
+    color: var(--putih);
+    font-weight: 600;
+    line-height: 1.35;
+    max-width: 540px;
+    margin: 0 auto 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .header p {
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--krem-tua);
+    height: 4px;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--hijau-mid);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    text-align: center;
+    font-size: 12px;
+    color: var(--teks-sub);
+    padding: 8px 0 4px;
+    font-weight: 500;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 20px;
+  }
+  .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--hijau);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section-title { font-family: 'Lora', serif; font-size: 18px; font-weight: 600; }
+  .section-sub   { font-size: 13px; color: var(--teks-sub); margin-top: 2px; }
+
+  /* CARDS */
+  .card {
+    background: var(--putih);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1.5px solid var(--krem-tua);
+    transition: border-color 0.2s;
+  }
+  .card:focus-within { border-color: var(--hijau-mid); }
+
+  .q-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teks);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .q-num {
+    display: inline-block;
+    background: var(--hijau);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* RADIO & CHECKBOX */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--krem-tua);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--teks);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .opt:hover { border-color: var(--hijau-mid); background: #F0FAF5; }
+  .opt input { accent-color: var(--hijau); width: 16px; height: 16px; flex-shrink: 0; }
+  .opt.selected { border-color: var(--hijau); background: #EAF6F0; font-weight: 500; }
+
+  /* LIKERT */
+  .likert-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--teks-sub);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .likert-row {
+    background: var(--putih);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--krem-tua);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .likert-row:focus-within { border-color: var(--hijau-mid); }
+  .likert-q {
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .likert-q .q-num { font-size: 10px; width: 20px; height: 20px; line-height: 20px; }
+  .likert-scale {
+    display: flex;
+    gap: 6px;
+  }
+  .likert-btn {
+    flex: 1;
+    aspect-ratio: 1;
+    max-width: 52px;
+    border-radius: 8px;
+    border: 1.5px solid var(--krem-tua);
+    background: var(--krem);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teks-sub);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .likert-btn:hover { border-color: var(--hijau-mid); color: var(--hijau); }
+  .likert-btn.active {
+    background: var(--hijau);
+    border-color: var(--hijau);
+    color: white;
+  }
+
+  /* NAVIGATION */
+  .nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-prev {
+    background: var(--krem-tua);
+    color: var(--teks-sub);
+    flex: 0.6;
+  }
+  .btn-prev:hover { background: #D9D4CB; }
+  .btn-next {
+    background: var(--hijau);
+    color: white;
+  }
+  .btn-next:hover { background: var(--hijau-mid); }
+  .btn-next:disabled { background: #A8C5B5; cursor: not-allowed; }
+  .btn-submit {
+    background: var(--hijau);
+    color: white;
+    width: 100%;
+  }
+  .btn-submit:hover { background: var(--hijau-mid); }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 48px 24px;
+  }
+  .success-screen.active { display: block; }
+  .success-icon {
+    width: 72px; height: 72px;
+    background: #EAF6F0;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+  }
+  .success-screen h2 {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    color: var(--hijau);
+    margin-bottom: 10px;
+  }
+  .success-screen p { font-size: 14px; color: var(--teks-sub); line-height: 1.6; }
+
+  /* ADMIN */
+  .admin-btn {
+    position: fixed;
+    bottom: 16px; right: 16px;
+    background: var(--hijau);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px; height: 44px;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    z-index: 100;
+  }
+  .admin-btn:hover { opacity: 1; }
+
+  .admin-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .admin-modal.open { display: flex; }
+  .admin-box {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .admin-box h3 {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--hijau);
+  }
+  .admin-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--krem-tua);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 10px;
+  }
+  .admin-input:focus { border-color: var(--hijau-mid); }
+  .admin-note {
+    font-size: 12px;
+    color: var(--teks-sub);
+    margin-bottom: 16px;
+    line-height: 1.5;
+    background: #F0FAF5;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--hijau-mid);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-card {
+    background: var(--krem);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-num { font-size: 28px; font-weight: 700; color: var(--hijau); }
+  .stat-lbl { font-size: 11px; color: var(--teks-sub); margin-top: 2px; }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .data-table th {
+    background: var(--hijau);
+    color: white;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .data-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--krem-tua);
+    vertical-align: top;
+  }
+  .data-table tr:nth-child(even) td { background: var(--krem); }
+
+  .btn-close {
+    width: 100%;
+    padding: 12px;
+    background: var(--krem-tua);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 16px;
+    color: var(--teks-sub);
+  }
+  .btn-export {
+    width: 100%;
+    padding: 12px;
+    background: var(--hijau);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  .error-msg {
+    color: var(--merah);
+    font-size: 12px;
+    margin-top: 6px;
+    display: none;
+  }
+
+  .text-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--krem-tua);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    color: var(--teks);
+    background: var(--krem);
+    transition: border-color 0.2s;
+  }
+  .text-input:focus { border-color: var(--hijau-mid); background: white; }
+  .text-input::placeholder { color: #AAAAAA; }
+  .verif-note {
+    font-size: 12px;
+    color: var(--teks-sub);
+    margin-top: 8px;
+    background: #FFF8EE;
+    border-left: 3px solid #E9A825;
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* INTRO */
+  .intro-card {
+    background: var(--putih);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 24px 0 20px;
+    border: 1.5px solid var(--krem-tua);
+  }
+  .intro-card p {
+    font-size: 13.5px;
+    color: var(--teks-sub);
+    line-height: 1.7;
+  }
+  .intro-card strong { color: var(--teks); }
+  .intro-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .tag {
+    background: #EAF6F0;
+    color: var(--hijau);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Penelitian Gizi · MAN 2 Surakarta</div>
+  <h1>Kebiasaan Konsumsi Sayuran & Kesehatan Kamu</h1>
+  <p>Diisi anonim · Hanya untuk keperluan penelitian ilmiah</p>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="progress-label" id="progressLabel">Bagian 1 dari 4</div>
+
+<div class="container">
+
+  <!-- INTRO -->
+  <div class="section active" id="sec-intro">
+    <div class="intro-card">
+      <p>Halo! Kuesioner ini merupakan bagian dari penelitian tentang <strong>kandungan gizi sayuran lokal Indonesia</strong> dan hubungannya dengan kesehatan sehari-hari. Tidak ada jawaban benar atau salah — isilah sesuai kondisi sebenarnya.</p>
+      <p style="margin-top:10px">Pengisian membutuhkan waktu sekitar <strong>3–5 menit</strong>. Data kamu bersifat anonim dan tidak akan dibagikan ke pihak luar.</p>
+      <div class="intro-tags">
+        <span class="tag">📋 19 pertanyaan</span>
+        <span class="tag">⏱ 3–5 menit</span>
+        <span class="tag">🔒 Anonim</span>
+        <span class="tag">🌿 Topik: gizi sayuran</span>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-next" onclick="goTo('sec-a')">Mulai Isi Kuesioner →</button>
+    </div>
+  </div>
+
+  <!-- BAGIAN A -->
+  <div class="section" id="sec-a">
+    <div class="section-header">
+      <div class="section-icon">👤</div>
+      <div>
+        <div class="section-title">Bagian A — Data Diri</div>
+        <div class="section-sub">3 pertanyaan</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">1</span> Nama lengkap kamu?</div>
+      <input type="text" class="text-input" id="q0" placeholder="Tulis nama lengkap di sini..." autocomplete="off">
+      <div class="verif-note">⚠ Nama hanya digunakan untuk keperluan verifikasi data oleh peneliti dan tidak akan dipublikasikan.</div>
+      <div class="error-msg" id="err-q0">Nama tidak boleh kosong.</div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">2</span> Status kamu di MAN 2 Surakarta?</div>
+      <div class="options" id="q1">
+        <label class="opt"><input type="radio" name="q1" value="Siswa"> Siswa</label>
+        <label class="opt"><input type="radio" name="q1" value="Guru/Tenaga Pendidik"> Guru / Tenaga Pendidik</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">3</span> Jenis kelamin?</div>
+      <div class="options" id="q2">
+        <label class="opt"><input type="radio" name="q2" value="Laki-laki"> Laki-laki</label>
+        <label class="opt"><input type="radio" name="q2" value="Perempuan"> Perempuan</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">4</span> Usia kamu?</div>
+      <div class="options" id="q3">
+        <label class="opt"><input type="radio" name="q3" value="<16 tahun"> &lt; 16 tahun</label>
+        <label class="opt"><input type="radio" name="q3" value="16-18 tahun"> 16–18 tahun</label>
+        <label class="opt"><input type="radio" name="q3" value="19-30 tahun"> 19–30 tahun</label>
+        <label class="opt"><input type="radio" name="q3" value=">30 tahun"> &gt; 30 tahun</label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-prev" onclick="goTo('sec-intro')">← Kembali</button>
+      <button class="btn btn-next" onclick="nextSection('sec-a', 'sec-b', ['q1','q2','q3'], [], [], true)">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- BAGIAN B -->
+  <div class="section" id="sec-b">
+    <div class="section-header">
+      <div class="section-icon">🥬</div>
+      <div>
+        <div class="section-title">Bagian B — Kebiasaan Makan Sayur</div>
+        <div class="section-sub">5 pertanyaan</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">4</span> Seberapa sering kamu makan sayuran dalam seminggu?</div>
+      <div class="options" id="q4">
+        <label class="opt"><input type="radio" name="q4" value="Hampir tidak pernah (0-1x)"> Hampir tidak pernah (0–1 kali)</label>
+        <label class="opt"><input type="radio" name="q4" value="Jarang (2-3x)"> Jarang (2–3 kali)</label>
+        <label class="opt"><input type="radio" name="q4" value="Cukup sering (4-5x)"> Cukup sering (4–5 kali)</label>
+        <label class="opt"><input type="radio" name="q4" value="Hampir setiap hari (6-7x)"> Hampir setiap hari (6–7 kali)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">5</span> Berapa porsi sayuran yang biasanya kamu makan dalam sekali makan?</div>
+      <div class="options" id="q5">
+        <label class="opt"><input type="radio" name="q5" value="Tidak ada"> Tidak ada</label>
+        <label class="opt"><input type="radio" name="q5" value="Sedikit (<1 centong)"> Sedikit (&lt;1 centong / segenggam)</label>
+        <label class="opt"><input type="radio" name="q5" value="Sedang (1-2 centong)"> Sedang (1–2 centong)</label>
+        <label class="opt"><input type="radio" name="q5" value="Banyak (>2 centong)"> Banyak (&gt;2 centong)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">6</span> Dari daftar berikut, sayuran mana yang paling sering kamu makan? <span style="font-weight:400;color:var(--teks-sub)">(pilih maksimal 3)</span></div>
+      <div class="options" id="q6">
+        <label class="opt"><input type="checkbox" name="q6" value="Bayam"> Bayam</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Kangkung"> Kangkung</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Brokoli"> Brokoli</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Wortel"> Wortel</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Daun Singkong"> Daun Singkong</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Katuk"> Katuk</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Kacang Panjang"> Kacang Panjang</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Kelor"> Kelor</label>
+        <label class="opt"><input type="checkbox" name="q6" value="Lainnya"> Lainnya</label>
+      </div>
+      <div class="error-msg" id="err-q6">Pilih maksimal 3 sayuran.</div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">7</span> Apa alasan utama kamu makan sayuran?</div>
+      <div class="options" id="q7">
+        <label class="opt"><input type="radio" name="q7" value="Sudah kebiasaan dari keluarga"> Sudah kebiasaan dari keluarga</label>
+        <label class="opt"><input type="radio" name="q7" value="Tahu manfaat gizinya"> Tahu manfaat gizinya</label>
+        <label class="opt"><input type="radio" name="q7" value="Karena tersedia di kantin/rumah"> Karena tersedia di kantin / rumah</label>
+        <label class="opt"><input type="radio" name="q7" value="Jarang/tidak makan sayuran"> Saya jarang / tidak makan sayuran</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">8</span> Bagaimana cara memasak sayuran yang paling sering kamu konsumsi?</div>
+      <div class="options" id="q8">
+        <label class="opt"><input type="radio" name="q8" value="Direbus"> Direbus</label>
+        <label class="opt"><input type="radio" name="q8" value="Ditumis"> Ditumis</label>
+        <label class="opt"><input type="radio" name="q8" value="Dikukus"> Dikukus</label>
+        <label class="opt"><input type="radio" name="q8" value="Dimakan mentah/lalapan"> Dimakan mentah / lalapan</label>
+        <label class="opt"><input type="radio" name="q8" value="Tidak tahu/tidak masak sendiri"> Tidak tahu / tidak masak sendiri</label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-prev" onclick="goTo('sec-a')">← Kembali</button>
+      <button class="btn btn-next" onclick="nextSection('sec-b', 'sec-c', ['q4','q5','q7','q8'], ['q6'])">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- BAGIAN C -->
+  <div class="section" id="sec-c">
+    <div class="section-header">
+      <div class="section-icon">🩺</div>
+      <div>
+        <div class="section-title">Bagian C — Keluhan Kesehatan</div>
+        <div class="section-sub">Skala 1–5 · dalam 1 bulan terakhir</div>
+      </div>
+    </div>
+
+    <div style="background:#EAF6F0;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--hijau);font-weight:500;">
+      1 = Tidak pernah &nbsp;·&nbsp; 2 = Jarang &nbsp;·&nbsp; 3 = Kadang-kadang &nbsp;·&nbsp; 4 = Sering &nbsp;·&nbsp; 5 = Sangat sering
+    </div>
+
+    <div class="likert-row" id="lrow-q9">
+      <div class="likert-q"><span class="q-num">9</span> Saya mengalami susah buang air besar (sembelit)</div>
+      <div class="likert-scale" id="q9-scale">
+        <button class="likert-btn" onclick="setLikert('q9',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q9',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q9',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q9',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q9',5)">5</button>
+      </div>
+    </div>
+
+    <div class="likert-row" id="lrow-q10">
+      <div class="likert-q"><span class="q-num">10</span> Saya merasa lemas, mudah pusing, atau cepat lelah tanpa sebab jelas</div>
+      <div class="likert-scale" id="q10-scale">
+        <button class="likert-btn" onclick="setLikert('q10',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q10',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q10',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q10',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q10',5)">5</button>
+      </div>
+    </div>
+
+    <div class="likert-row" id="lrow-q11">
+      <div class="likert-q"><span class="q-num">11</span> Saya mudah sakit (flu, batuk, infeksi ringan) dalam sebulan terakhir</div>
+      <div class="likert-scale" id="q11-scale">
+        <button class="likert-btn" onclick="setLikert('q11',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q11',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q11',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q11',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q11',5)">5</button>
+      </div>
+    </div>
+
+    <div class="likert-row" id="lrow-q12">
+      <div class="likert-q"><span class="q-num">12</span> Saya mengalami masalah pada mata (buram, kering) atau kulit (kusam, mudah berjerawat)</div>
+      <div class="likert-scale" id="q12-scale">
+        <button class="likert-btn" onclick="setLikert('q12',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q12',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q12',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q12',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q12',5)">5</button>
+      </div>
+    </div>
+
+    <div class="likert-row" id="lrow-q13">
+      <div class="likert-q"><span class="q-num">13</span> Saya mengalami kram otot atau nyeri tulang / sendi</div>
+      <div class="likert-scale" id="q13-scale">
+        <button class="likert-btn" onclick="setLikert('q13',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q13',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q13',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q13',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q13',5)">5</button>
+      </div>
+    </div>
+
+    <div class="likert-row" id="lrow-q14">
+      <div class="likert-q"><span class="q-num">14</span> Saya pernah diberitahu memiliki kadar gula darah atau kolesterol yang tidak normal</div>
+      <div class="likert-scale" id="q14-scale">
+        <button class="likert-btn" onclick="setLikert('q14',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q14',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q14',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q14',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q14',5)">5</button>
+      </div>
+    </div>
+
+    <div class="likert-row" id="lrow-q15">
+      <div class="likert-q"><span class="q-num">15</span> Saya merasa stamina atau daya tahan tubuh saya kurang baik saat beraktivitas</div>
+      <div class="likert-scale" id="q15-scale">
+        <button class="likert-btn" onclick="setLikert('q15',1)">1</button>
+        <button class="likert-btn" onclick="setLikert('q15',2)">2</button>
+        <button class="likert-btn" onclick="setLikert('q15',3)">3</button>
+        <button class="likert-btn" onclick="setLikert('q15',4)">4</button>
+        <button class="likert-btn" onclick="setLikert('q15',5)">5</button>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-prev" onclick="goTo('sec-b')">← Kembali</button>
+      <button class="btn btn-next" onclick="nextSection('sec-c', 'sec-d', [], [], ['q9','q10','q11','q12','q13','q14','q15'])">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- BAGIAN D -->
+  <div class="section" id="sec-d">
+    <div class="section-header">
+      <div class="section-icon">🌱</div>
+      <div>
+        <div class="section-title">Bagian D — Keterbukaan terhadap Sayuran Baru</div>
+        <div class="section-sub">3 pertanyaan terakhir</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">16</span> Sayuran berikut mana yang kamu kenal? <span style="font-weight:400;color:var(--teks-sub)">(boleh pilih lebih dari satu)</span></div>
+      <div class="options" id="q16">
+        <label class="opt"><input type="checkbox" name="q16" value="Katuk"> Katuk</label>
+        <label class="opt"><input type="checkbox" name="q16" value="Kelor"> Kelor</label>
+        <label class="opt"><input type="checkbox" name="q16" value="Daun Singkong"> Daun Singkong</label>
+        <label class="opt"><input type="checkbox" name="q16" value="Semua sudah saya kenal"> Semua sudah saya kenal</label>
+        <label class="opt"><input type="checkbox" name="q16" value="Tidak mengenal satupun"> Tidak mengenal satupun</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">17</span> Seberapa besar kemungkinan kamu mencoba sayuran yang belum pernah dimakan jika terbukti bergizi tinggi?</div>
+      <div class="options" id="q17">
+        <label class="opt"><input type="radio" name="q17" value="Tidak mau mencoba"> Tidak mau mencoba</label>
+        <label class="opt"><input type="radio" name="q17" value="Mungkin mencoba"> Mungkin mencoba</label>
+        <label class="opt"><input type="radio" name="q17" value="Cukup mau mencoba"> Cukup mau mencoba</label>
+        <label class="opt"><input type="radio" name="q17" value="Sangat mau mencoba"> Sangat mau mencoba</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="q-label"><span class="q-num">18</span> Jika ada rekomendasi sayuran dari penelitian ini, apakah kamu tertarik mendapatkannya?</div>
+      <div class="options" id="q18">
+        <label class="opt"><input type="radio" name="q18" value="Tidak tertarik"> Tidak tertarik</label>
+        <label class="opt"><input type="radio" name="q18" value="Tertarik"> Tertarik</label>
+        <label class="opt"><input type="radio" name="q18" value="Sangat tertarik"> Sangat tertarik</label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-prev" onclick="goTo('sec-c')">← Kembali</button>
+      <button class="btn btn-submit" onclick="submitForm()">Kirim Jawaban ✓</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="sec-success">
+    <div class="success-icon">🌿</div>
+    <h2>Terima kasih!</h2>
+    <p>Jawaban kamu sudah berhasil tersimpan dan akan membantu penelitian kami tentang gizi sayuran lokal Indonesia.<br><br>Kamu boleh menutup halaman ini sekarang.</p>
+  </div>
+
+</div>
+
+<!-- ADMIN BUTTON -->
+<button class="admin-btn" onclick="openAdmin()" title="Admin">⚙</button>
+
+<!-- ADMIN MODAL -->
+<div class="admin-modal" id="adminModal">
+  <div class="admin-box">
+    <h3>🔐 Panel Admin</h3>
+    <div id="adminLogin">
+      <div class="admin-note">Masukkan password admin untuk melihat data responden.</div>
+      <input type="password" class="admin-input" id="adminPass" placeholder="Password admin..." onkeydown="if(event.key==='Enter')checkAdmin()">
+      <button class="btn btn-next" style="width:100%;margin-top:4px" onclick="checkAdmin()">Masuk</button>
+      <div class="error-msg" id="adminErr" style="display:none;margin-top:8px">Password salah.</div>
+    </div>
+    <div id="adminPanel" style="display:none">
+      <div class="stats-grid" id="statsGrid"></div>
+      <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+      <div id="dataTableWrap"></div>
+    </div>
+    <button class="btn-close" onclick="closeAdmin()">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────
+// GANTI dengan URL Google Apps Script kamu setelah setup
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyi_B5y0RrC0_1Ui0kO33vRyWyxz9ccOtkBR6RgcOVnVqcZKJaTDa8DeFmXFszIQ2Wb/exec";
+// GANTI dengan password admin yang kamu inginkan
+const ADMIN_PASSWORD = "sayuranman2";
+// ──────────────────────────────────────────────────────────────
+
+const sections = ['sec-intro','sec-a','sec-b','sec-c','sec-d'];
+let likertValues = {};
+let allResponses = [];
+
+function goTo(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  updateProgress(id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function updateProgress(id) {
+  const map = {'sec-intro':0,'sec-a':1,'sec-b':2,'sec-c':3,'sec-d':4};
+  const step = map[id] ?? 0;
+  const pct = step === 0 ? 0 : (step / 4) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  const labels = ['','Bagian A dari 4','Bagian B dari 4','Bagian C dari 4','Bagian D dari 4'];
+  document.getElementById('progressLabel').textContent = step === 0 ? 'Selamat datang' : labels[step];
+}
+
+function setLikert(q, val) {
+  likertValues[q] = val;
+  const btns = document.querySelectorAll(`#${q}-scale .likert-btn`);
+  btns.forEach((b,i) => b.classList.toggle('active', i+1 === val));
+  document.getElementById(`lrow-${q}`).style.borderColor = 'var(--hijau-mid)';
+}
+
+function getRadio(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : null;
+}
+
+function getCheckbox(name) {
+  const els = document.querySelectorAll(`input[name="${name}"]:checked`);
+  return Array.from(els).map(e => e.value).join(', ') || null;
+}
+
+function highlightOpt(optDiv) {
+  document.querySelectorAll(`#${optDiv} .opt`).forEach(o => {
+    const inp = o.querySelector('input');
+    o.classList.toggle('selected', inp.checked);
+  });
+}
+
+document.addEventListener('change', e => {
+  if(e.target.type === 'radio' || e.target.type === 'checkbox') {
+    const name = e.target.name;
+    const parent = document.getElementById(name);
+    if(parent) highlightOpt(name);
+
+    // max 3 for q6
+    if(name === 'q6') {
+      const checked = document.querySelectorAll('input[name="q6"]:checked');
+      if(checked.length > 3) { e.target.checked = false; highlightOpt('q6'); document.getElementById('err-q6').style.display='block'; }
+      else document.getElementById('err-q6').style.display='none';
+    }
+  }
+});
+
+function nextSection(from, to, radioFields=[], checkboxFields=[], likertFields=[], checkName=false) {
+  let ok = true;
+
+  if(checkName) {
+    const nameVal = document.getElementById('q0').value.trim();
+    const errEl = document.getElementById('err-q0');
+    const inputEl = document.getElementById('q0');
+    if(!nameVal) {
+      inputEl.style.borderColor = 'var(--merah)';
+      errEl.style.display = 'block';
+      ok = false;
+    } else {
+      inputEl.style.borderColor = '';
+      errEl.style.display = 'none';
+    }
+  }
+
+  radioFields.forEach(f => {
+    const card = document.querySelector(`#${f}`).closest('.card');
+    if(!getRadio(f)) { card.style.borderColor='var(--merah)'; ok=false; }
+    else card.style.borderColor='';
+  });
+
+  checkboxFields.forEach(f => {
+    const card = document.querySelector(`#${f}`).closest('.card');
+    const checked = document.querySelectorAll(`input[name="${f}"]:checked`).length;
+    if(checked === 0) { card.style.borderColor='var(--merah)'; ok=false; }
+    else card.style.borderColor='';
+  });
+
+  likertFields.forEach(f => {
+    const row = document.getElementById(`lrow-${f}`);
+    if(!likertValues[f]) { row.style.borderColor='var(--merah)'; ok=false; }
+    else row.style.borderColor='';
+  });
+
+  if(!ok) { window.scrollTo({top:200,behavior:'smooth'}); return; }
+  goTo(to);
+}
+
+async function submitForm() {
+  // Validate D
+  const radioD = ['q17','q18'];
+  let ok = true;
+  radioD.forEach(f => {
+    const card = document.querySelector(`#${f}`).closest('.card');
+    if(!getRadio(f)) { card.style.borderColor='var(--merah)'; ok=false; }
+    else card.style.borderColor='';
+  });
+  if(!ok) return;
+
+  const data = {
+    timestamp: new Date().toLocaleString('id-ID'),
+    nama: document.getElementById('q0').value.trim(),
+    q1: getRadio('q1'),
+    q2: getRadio('q2'),
+    q3: getRadio('q3'),
+    q4: getRadio('q4'),
+    q5: getRadio('q5'),
+    q6: getCheckbox('q6'),
+    q7: getRadio('q7'),
+    q8: getRadio('q8'),
+    q9: likertValues['q9'],
+    q10: likertValues['q10'],
+    q11: likertValues['q11'],
+    q12: likertValues['q12'],
+    q13: likertValues['q13'],
+    q14: likertValues['q14'],
+    q15: likertValues['q15'],
+    q16: getCheckbox('q16'),
+    q17: getRadio('q17'),
+    q18: getRadio('q18')
+  };
+
+  // Store locally as backup
+  try {
+    const stored = JSON.parse(localStorage.getItem('responses') || '[]');
+    stored.push(data);
+    localStorage.setItem('responses', JSON.stringify(stored));
+  } catch(e) {}
+
+  // Send to Google Sheets
+  if(SCRIPT_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
+    try {
+      await fetch(SCRIPT_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(data)
+      });
+    } catch(e) { console.log('Send failed, saved locally'); }
+  }
+
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-success').classList.add('active');
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Selesai ✓';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── ADMIN ──
+function openAdmin() { document.getElementById('adminModal').classList.add('open'); }
+function closeAdmin() {
+  document.getElementById('adminModal').classList.remove('open');
+  document.getElementById('adminLogin').style.display='block';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminPass').value='';
+  document.getElementById('adminErr').style.display='none';
+}
+
+function checkAdmin() {
+  const pass = document.getElementById('adminPass').value;
+  if(pass === ADMIN_PASSWORD) {
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    loadAdminData();
+  } else {
+    document.getElementById('adminErr').style.display='block';
+  }
+}
+
+function loadAdminData() {
+  let responses = [];
+  try { responses = JSON.parse(localStorage.getItem('responses') || '[]'); } catch(e){}
+  allResponses = responses;
+
+  const siswa = responses.filter(r=>r.q1==='Siswa').length;
+  const guru  = responses.filter(r=>r.q1==='Guru/Tenaga Pendidik').length;
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${responses.length}</div><div class="stat-lbl">Total Responden</div></div>
+    <div class="stat-card"><div class="stat-num">${siswa}</div><div class="stat-lbl">Siswa</div></div>
+    <div class="stat-card"><div class="stat-num">${guru}</div><div class="stat-lbl">Guru</div></div>
+    <div class="stat-card"><div class="stat-num">${responses.length > 0 ? Math.round(responses.reduce((a,r)=>a+(parseInt(r.q9||0)+parseInt(r.q10||0)+parseInt(r.q11||0)+parseInt(r.q12||0)+parseInt(r.q13||0)+parseInt(r.q14||0)+parseInt(r.q15||0))/7,0)/responses.length*10)/10 : '-'}</div><div class="stat-lbl">Rata-rata Keluhan</div></div>
+  `;
+
+  if(responses.length === 0) {
+    document.getElementById('dataTableWrap').innerHTML = '<p style="font-size:13px;color:var(--teks-sub);text-align:center;padding:16px 0">Belum ada data masuk.</p>';
+    return;
+  }
+
+  const headers = ['Waktu','Nama','Status','Gender','Usia','Frek. Sayur','Porsi','Sayuran Favorit','Alasan','Masak','Q9','Q10','Q11','Q12','Q13','Q14','Q15','Kenal','Mau Coba','Minta Rekomen'];
+  const keys = ['timestamp','nama','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18'];
+
+  let html = '<div style="overflow-x:auto"><table class="data-table"><thead><tr>';
+  headers.forEach(h => html += `<th>${h}</th>`);
+  html += '</tr></thead><tbody>';
+  responses.slice().reverse().forEach(r => {
+    html += '<tr>';
+    keys.forEach(k => html += `<td>${r[k]??'-'}</td>`);
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  document.getElementById('dataTableWrap').innerHTML = html;
+}
+
+function exportCSV() {
+  if(allResponses.length === 0) { alert('Belum ada data.'); return; }
+  const keys = ['timestamp','nama','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18'];
+  const headers = ['Waktu','Nama','Status','Gender','Usia','Frek_Sayur','Porsi','Sayuran_Favorit','Alasan','Cara_Masak','Sembelit','Lemas_Pusing','Mudah_Sakit','Mata_Kulit','Kram_Tulang','Gula_Kolesterol','Stamina','Kenal_Sayuran','Mau_Coba','Minta_Rekomendasi'];
+  let csv = headers.join(',') + '\n';
+  allResponses.forEach(r => {
+    csv += keys.map(k => `"${(r[k]??'').toString().replace(/"/g,'""')}"`).join(',') + '\n';
+  });
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'data-kuesioner-sayuran.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
